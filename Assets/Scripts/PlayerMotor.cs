@@ -19,6 +19,9 @@ public class PlayerMotor : MonoBehaviour
 
     private bool sprinting;
 
+    // hover
+    public float DistanceFromGround = 2f;
+
 
 
     // Start is called before the first frame update
@@ -56,6 +59,19 @@ public class PlayerMotor : MonoBehaviour
                 crouchTimer = 0f;
             }
         }
+
+        /*
+        //hover
+        Vector3 newPos = transform.position;
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        {
+            newPos.y = (hit.point + Vector3.up * DistanceFromGround).y;
+        }
+
+        transform.position = newPos;
+        */
             
 
         
@@ -67,18 +83,27 @@ public class PlayerMotor : MonoBehaviour
         moveDirection.x = input.x;
         moveDirection.z = input.y;
         controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
+        
         playerVelocity.y += gravity * Time.deltaTime;
         if(isGrounded && playerVelocity.y < 0)
             playerVelocity.y = -2f;
+        
         controller.Move(playerVelocity * Time.deltaTime);
         
     }
     public void Jump()
     {
+        
         if (isGrounded)
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
         }
+
+        /* //hover
+        if (DistanceFromGround < 3)
+        {
+            playerVelocity.y = 5f;
+        }*/
     }
 
     public void Crouch()
