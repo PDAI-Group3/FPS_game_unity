@@ -19,8 +19,6 @@ public class PlayerMotor : MonoBehaviour
 
     private bool sprinting;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
