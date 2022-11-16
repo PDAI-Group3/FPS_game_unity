@@ -8,7 +8,7 @@ public class PlayerMotor : MonoBehaviour
 
     private CharacterController controller;
     private Vector3 playerVelocity;
-    public float speed = 5f;
+    public float speed = 8f;
     private bool isGrounded;
     public float gravity = -9.8f;
     public float jumpHeight = 1f;
@@ -123,11 +123,11 @@ public class PlayerMotor : MonoBehaviour
         else { 
             if (sprinting)
             {
-                speed = 9;
+                speed = 12;
             }
             else
             {
-                speed = 6;
+                speed = 8;
             }
         }
     }

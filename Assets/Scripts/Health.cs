@@ -27,36 +27,9 @@ public class Health : MonoBehaviour
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
     }
 
-    void Update()
+    private void Update()
     {
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-        }
-
-        for (int i = 0; i < hearts.Length; i++)
-        {
-            if (i < health)
-            {
-                hearts[i].sprite = fullHeart;
-            }
-            else
-            {
-                hearts[i].sprite = emptyHeart;
-            }
-
-            if (i < maxHealth)
-            {
-                hearts[i].enabled = true;
-            }
-            else
-            {
-                hearts[i].enabled = false;
-            }
-        }
-
-
-        //UpdateHealthUI();
+        UpdateHealthUI();
         if (overlay.color.a > 0)
         {
             durationTimer += Time.deltaTime;

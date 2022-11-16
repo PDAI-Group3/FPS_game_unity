@@ -2,20 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.Netcode;
 
-public class InputManager : NetworkBehaviour {
-    public override void OnNetworkSpawn() {
-        if(!IsOwner) {this.enabled = false;}
-    }
+public class InputManager : MonoBehaviour
+{
 
     private PlayerInput playerInput;
     public PlayerInput.OnFootActions onFoot;
 
     private PlayerMotor motor;
-
     private PlayerLook look;
-
     // Start is called before the first frame update
     void Awake()
     {
