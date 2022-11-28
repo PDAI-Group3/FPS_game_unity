@@ -1,10 +1,40 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneLoader : MonoBehaviour
 {
+    InputField joinCode = GameObject.Find("JoinCode").GetComponent<InputField>();
     public void LoadScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        switch(sceneName) {
+            case "MainMenu":
+                SceneManager.LoadScene(sceneName);
+                break;
+            case "SPMenu":
+                SceneManager.LoadScene(sceneName);
+                break;
+            case "MPMenu":
+                SceneManager.LoadScene(sceneName);
+                break;
+            case "SettingsMenu":
+                SceneManager.LoadScene(sceneName);
+                break;
+            case "SPGameScene":
+                SceneManager.LoadScene(sceneName);
+                break;
+            case "SampleScene":
+                SceneManager.LoadScene(sceneName);
+                break;
+            case "Host":
+                SceneManager.LoadScene("MultiplayerScene");
+                HostAndJoin.HostGame(4);
+                break;
+            case "Client":
+
+                SceneManager.LoadScene("MultiplayerScene");
+                HostAndJoin.JoinGame(joinCode.text);
+                break;
+        }
     }
 }
