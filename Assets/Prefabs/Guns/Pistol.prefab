@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 260096479021737691}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Design
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,6 +30,7 @@ Transform:
   m_Children:
   - {fileID: 260096480582280844}
   - {fileID: 260096479226209400}
+  - {fileID: 2286871462240228115}
   m_Father: {fileID: 260096479376633788}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,8 +46,8 @@ GameObject:
   - component: {fileID: 260096479226209401}
   - component: {fileID: 260096479226209402}
   - component: {fileID: 260096479226209403}
-  m_Layer: 0
-  m_Name: Cube (1)
+  m_Layer: 8
+  m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,14 +60,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 260096479226209404}
-  m_LocalRotation: {x: -0, y: 0.6729186, z: -0, w: 0.73971653}
-  m_LocalPosition: {x: 0.44689453, y: 0.034006115, z: 1.6012876}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.44689453, y: 0.03400612, z: 1.6012876}
   m_LocalScale: {x: 0.66084635, y: 0.10970399, z: 0.14212564}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 260096479021737691}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &260096479226209401
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -139,7 +140,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 260096479376633788}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 260096480206654711}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 260096480342457324}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: States
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 260096480455647435}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Resources
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -272,8 +273,8 @@ GameObject:
   - component: {fileID: 260096480582280845}
   - component: {fileID: 260096480582280846}
   - component: {fileID: 260096480582280847}
-  m_Layer: 0
-  m_Name: Cube
+  m_Layer: 8
+  m_Name: handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -286,14 +287,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 260096480582280832}
-  m_LocalRotation: {x: -0, y: 0.6729186, z: -0, w: 0.73971653}
-  m_LocalPosition: {x: 0.4644286, y: -0.11639403, z: 1.4512718}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.452456, y: -0.11639404, z: 1.4503497}
   m_LocalScale: {x: 0.11991626, y: 0.23621558, z: 0.098821744}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 260096479021737691}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &260096480582280845
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -366,7 +367,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7238997824194719173}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: ADS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,12 +382,43 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4242555086445447371}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.45, y: 0.46, z: -0.821}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 260096480342457324}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8043458259008607368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2286871462240228115}
+  m_Layer: 8
+  m_Name: EndOfBarrel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2286871462240228115
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8043458259008607368}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.447, y: 0.0365, z: 1.938}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 260096479021737691}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8218284913078978688
 GameObject:
@@ -397,7 +429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1310183098515893879}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerLook : MonoBehaviour
 {
     public Camera cam;
+
+    public Transform weapon;
+
     private float xRotation = 0f;
 
     public float xSensitivity = 50f;
@@ -27,5 +30,8 @@ public class PlayerLook : MonoBehaviour
         
 
         transform.Rotate(Vector3.up * (mouseX * Time.deltaTime) * xSensitivity);
+
+        //this doesnt work yet
+        //weapon.rotation = Quaternion.Euler(xRotation, 0, 0);
     }
 }
