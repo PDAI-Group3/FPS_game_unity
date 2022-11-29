@@ -20,6 +20,7 @@ public class Health : MonoBehaviour
     public float fadeSpeed; // how fast the image fades away
 
     private float durationTimer;
+    private bool death = false;
 
     private void Start()
     {
@@ -89,10 +90,27 @@ public class Health : MonoBehaviour
         health -= damageAmount;
         durationTimer = 0;
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0.25f);
+
+        death = CheckHealth();
+
+        if (death)
+        {
+            //kuolema
+            Debug.Log("kuollut");
+        }
     }
 
     public void TakeHeal(int healAmount)
     {
         health += healAmount;
+    }
+
+    public bool CheckHealth()
+    {
+        if(health <= 0)
+        {
+            return true;
+        }
+        return false;
     }
 }
