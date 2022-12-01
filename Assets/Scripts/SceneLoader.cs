@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
 public class SceneLoader : MonoBehaviour
 {
-    InputField joinCode = GameObject.Find("JoinCode").GetComponent<InputField>();
+    public static string joinCode;
     public void LoadScene(string sceneName)
     {
         switch(sceneName) {
@@ -31,9 +30,8 @@ public class SceneLoader : MonoBehaviour
                 HostAndJoin.HostGame(4);
                 break;
             case "Client":
-
                 SceneManager.LoadScene("MultiplayerScene");
-                HostAndJoin.JoinGame(joinCode.text);
+                HostAndJoin.JoinGame(joinCode);
                 break;
         }
     }
