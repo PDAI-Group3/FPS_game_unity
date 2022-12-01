@@ -336,8 +336,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  fullHeart: {fileID: -2413806693520163455, guid: 908e6ad10d314e546b27f94d7ac59aa8, type: 3}
-  emptyHeart: {fileID: 7482667652216324306, guid: 91cb193941bb48a4a88b7dcfdb79b66c, type: 3}
+  fullHeart: {fileID: 21300000, guid: 802da6fb579b0f94d86f7e77706351ff, type: 3}
+  emptyHeart: {fileID: 21300000, guid: b74fe316e9a9f0643bbcd58904f48a43, type: 3}
   overlay: {fileID: 0}
   duration: 0.2
   fadeSpeed: 0.5

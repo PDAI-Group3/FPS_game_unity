@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
+
 public class Weapon : MonoBehaviour
 {
 
@@ -34,6 +35,8 @@ public class Weapon : MonoBehaviour
             {
                 Shoot();
             }
+
+            
 
             
         }
