@@ -6,6 +6,8 @@ using Unity.Netcode;
 public class NetworkPlayerLook : NetworkBehaviour
 {
     public Camera cam;
+
+    public Transform weapon;
     private float xRotation = 0f;
 
     public float xSensitivity = 30f;
@@ -24,14 +26,14 @@ public class NetworkPlayerLook : NetworkBehaviour
     }
     public void ProcessLook(Vector2 input)
     {
-        float mouseX =input.x;
-        float mouseY =input.y;
+        float mouseX = input.x;
+        float mouseY = input.y;
 
         xRotation -= (mouseY * Time.deltaTime) * ySensitivity;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
-
+        
         transform.Rotate(Vector3.up * (mouseX * Time.deltaTime) * xSensitivity);
     }
 }
