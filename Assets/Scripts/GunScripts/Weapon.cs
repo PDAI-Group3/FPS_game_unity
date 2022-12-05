@@ -81,6 +81,14 @@ public class Weapon : MonoBehaviour
         RaycastHit t_hit = new RaycastHit();
         if (Physics.Raycast(GameObject.Find("Player/PlayerCamera").transform.position, GameObject.Find("Player/PlayerCamera").transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, canBeShot))
         {
+
+            if(t_hit.collider.gameObject.TryGetComponent<EnemyAI>(out EnemyAI enemyAIComponent))
+            {
+                enemyAIComponent.TakeDamage(1);
+
+                return;
+            }
+
             GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
             t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal);
 
