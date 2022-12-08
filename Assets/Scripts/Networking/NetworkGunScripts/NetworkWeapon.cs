@@ -27,36 +27,61 @@ public class NetworkWeapon : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Alpha1)) Equip(0);
+        if(IsServer) {
+            if (Input.GetKeyUp(KeyCode.Alpha1)) Equip(0);
 
-        if (currentWeapon != null)
-        {
-            Aim(Input.GetMouseButton(1));
-
-            
-            if (Input.GetMouseButtonDown(0))
+            if (currentWeapon != null)
             {
-                Shoot();
+                Aim(Input.GetMouseButton(1));
+
+                
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Shoot();
+                }
             }
+        }
+        else {
+            if (Input.GetKeyUp(KeyCode.Alpha1)) EquipServerRpc(0);
 
-            
+            if (currentWeapon != null)
+            {
+                AimServerRpc(Input.GetMouseButton(1));
 
-            
+                
+                if (Input.GetMouseButtonDown(0))
+                {
+                    ShootServerRpc();
+                }
+            }
         }
     }
 
     void Equip (int p_ind)
-    {
-        if (currentWeapon != null) Destroy(currentWeapon);
+    {   
 
-        currentIndex = p_ind;
+            if (currentWeapon != null) Destroy(currentWeapon);
 
-        GameObject t_newWeapon = Instantiate (loadout[p_ind].prefab, weaponParent.position, weaponParent.rotation, weaponParent) as GameObject;
-        t_newWeapon.transform.localPosition = Vector3.zero;
-        t_newWeapon.transform.localEulerAngles = Vector3.zero;
+            currentIndex = p_ind;
 
-        currentWeapon = t_newWeapon;
+            GameObject t_newWeapon = Instantiate (loadout[p_ind].prefab, weaponParent.position, weaponParent.rotation, weaponParent) as GameObject;
+            t_newWeapon.transform.localPosition = Vector3.zero;
+            t_newWeapon.transform.localEulerAngles = Vector3.zero;
 
+            currentWeapon = t_newWeapon;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void EquipServerRpc(int p_ind) {
+            if (currentWeapon != null) Destroy(currentWeapon);
+
+            currentIndex = p_ind;
+
+            GameObject t_newWeapon = Instantiate (loadout[p_ind].prefab, weaponParent.position, weaponParent.rotation, weaponParent) as GameObject;
+            t_newWeapon.transform.localPosition = Vector3.zero;
+            t_newWeapon.transform.localEulerAngles = Vector3.zero;
+
+            currentWeapon = t_newWeapon;
     }
 
     void Aim(bool p_isAiming)
@@ -77,12 +102,43 @@ public class NetworkWeapon : NetworkBehaviour
         }
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    void AimServerRpc(bool p_isAiming)
+    {
+        Transform t_anchor = currentWeapon.transform.Find("Anchor");
+        Transform t_state_ads = currentWeapon.transform.Find("States/ADS");
+        Transform t_state_hip = currentWeapon.transform.Find("States/Hip");
+
+        if (p_isAiming)
+        {
+            //aiming
+            t_anchor.position = Vector3.Lerp(t_anchor.position, t_state_ads.position, Time.deltaTime * loadout[currentIndex].aimSpeed);
+        }
+        else
+        {
+            //hip
+            t_anchor.position = Vector3.Lerp(t_anchor.position, t_state_hip.position, Time.deltaTime * loadout[currentIndex].aimSpeed);
+        }
+    }
+
     void Shoot()
     {
-        
-        // THIS NEED UPDATING FOR NETWORK
         RaycastHit t_hit = new RaycastHit();
-        if (Physics.Raycast(GameObject.Find("NetworkPlayer(Clone)/PlayerCamera").transform.position, GameObject.Find("NetworkPlayer(Clone)/PlayerCamera").transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, canBeShot))
+        if (Physics.Raycast(NetworkManager.LocalClient.PlayerObject.transform.position, NetworkManager.LocalClient.PlayerObject.transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, canBeShot))
+        {
+            GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
+            t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal);
+
+            //hole disappears in given seconds
+            Destroy(t_newBulletHole, 5f);
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void ShootServerRpc()
+    {
+        RaycastHit t_hit = new RaycastHit();
+        if (Physics.Raycast(NetworkManager.LocalClient.PlayerObject.transform.position, NetworkManager.LocalClient.PlayerObject.transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, canBeShot))
         {
             GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
             t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal);
