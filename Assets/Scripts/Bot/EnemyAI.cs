@@ -8,8 +8,6 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     float healthAI, maxHealthAI = 9f;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         healthAI = maxHealthAI;
@@ -24,8 +22,5 @@ public class EnemyAI : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-
-
     }
 }
