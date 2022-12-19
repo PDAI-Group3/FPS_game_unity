@@ -18,26 +18,31 @@ public class NetworkWeapon : NetworkBehaviour
     private int currentIndex;
 
     private GameObject currentWeapon;
+
+    private ulong clientId;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        clientId = NetworkManager.LocalClientId;
     }
 
     // Update is called once per frame
     void Update()
     {
         if(IsServer) {
-            if (Input.GetKeyUp(KeyCode.Alpha1)) Equip(0);
+            if (Input.GetKeyUp(KeyCode.Alpha1)) EquipClientRpc(0);
 
             if (currentWeapon != null)
             {
-                Aim(Input.GetMouseButton(1));
+                AimClientRpc(Input.GetMouseButton(1));
 
                 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    Shoot();
+                    Vector3 transformPos = NetworkManager.LocalClient.PlayerObject.transform.position;
+                    Vector3 transformDir = NetworkManager.LocalClient.PlayerObject.transform.TransformDirection(Vector3.forward);
+                    ShootClientRpc(transformPos, transformDir);
                 }
             }
         }
@@ -51,13 +56,14 @@ public class NetworkWeapon : NetworkBehaviour
                 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    ShootServerRpc();
+                    ShootServerRpc(clientId);
                 }
             }
         }
     }
 
-    void Equip (int p_ind)
+    [ClientRpc]
+    void EquipClientRpc(int p_ind)
     {   
 
             if (currentWeapon != null) Destroy(currentWeapon);
@@ -73,18 +79,11 @@ public class NetworkWeapon : NetworkBehaviour
 
     [ServerRpc(RequireOwnership = false)]
     public void EquipServerRpc(int p_ind) {
-            if (currentWeapon != null) Destroy(currentWeapon);
-
-            currentIndex = p_ind;
-
-            GameObject t_newWeapon = Instantiate (loadout[p_ind].prefab, weaponParent.position, weaponParent.rotation, weaponParent) as GameObject;
-            t_newWeapon.transform.localPosition = Vector3.zero;
-            t_newWeapon.transform.localEulerAngles = Vector3.zero;
-
-            currentWeapon = t_newWeapon;
+        EquipClientRpc(p_ind);
     }
 
-    void Aim(bool p_isAiming)
+    [ClientRpc]
+    void AimClientRpc(bool p_isAiming)
     {
         Transform t_anchor = currentWeapon.transform.Find("Anchor");
         Transform t_state_ads = currentWeapon.transform.Find("States/ADS");
@@ -105,27 +104,15 @@ public class NetworkWeapon : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     void AimServerRpc(bool p_isAiming)
     {
-        Transform t_anchor = currentWeapon.transform.Find("Anchor");
-        Transform t_state_ads = currentWeapon.transform.Find("States/ADS");
-        Transform t_state_hip = currentWeapon.transform.Find("States/Hip");
-
-        if (p_isAiming)
-        {
-            //aiming
-            t_anchor.position = Vector3.Lerp(t_anchor.position, t_state_ads.position, Time.deltaTime * loadout[currentIndex].aimSpeed);
-        }
-        else
-        {
-            //hip
-            t_anchor.position = Vector3.Lerp(t_anchor.position, t_state_hip.position, Time.deltaTime * loadout[currentIndex].aimSpeed);
-        }
+                AimClientRpc(p_isAiming);
     }
 
-    void Shoot()
+    [ClientRpc]
+    void ShootClientRpc(Vector3 transformPos, Vector3 transformDir)
     {
-        RaycastHit t_hit = new RaycastHit();
-        if (Physics.Raycast(NetworkManager.LocalClient.PlayerObject.transform.position, NetworkManager.LocalClient.PlayerObject.transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, canBeShot))
-        {
+            RaycastHit t_hit = new RaycastHit();
+            if (Physics.Raycast( transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
+            {
             GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
             t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal);
 
@@ -135,16 +122,11 @@ public class NetworkWeapon : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void ShootServerRpc()
+    void ShootServerRpc(ulong clientId)
     {
-        RaycastHit t_hit = new RaycastHit();
-        if (Physics.Raycast(NetworkManager.LocalClient.PlayerObject.transform.position, NetworkManager.LocalClient.PlayerObject.transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, canBeShot))
-        {
-            GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
-            t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal);
-
-            //hole disappears in given seconds
-            Destroy(t_newBulletHole, 5f);
-        }
+        NetworkObject playerObj = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
+        Vector3 transformPos = playerObj.transform.position;
+        Vector3 transformDir = playerObj.transform.TransformDirection(Vector3.forward);
+        ShootClientRpc(transformPos, transformDir);
     }
 }

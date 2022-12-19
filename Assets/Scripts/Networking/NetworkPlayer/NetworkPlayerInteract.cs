@@ -17,7 +17,7 @@ public class NetworkPlayerInteract : NetworkBehaviour
     void Start()
     {
         cam = GetComponent<NetworkPlayerLook>().cam;
-        playerUI = GetComponent<PlayerUI>();
+        //playerUI = GetComponent<PlayerUI>();
         inputManager = GetComponent<NetworkInputManager>();
     }
 
@@ -33,7 +33,7 @@ public class NetworkPlayerInteract : NetworkBehaviour
             if (hitInfo.collider.GetComponent<Interactable>() != null)
             {
                 Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
-                playerUI.UpdateText(interactable.promptMessage);
+                //playerUI.UpdateText(interactable.promptMessage);
                 if (inputManager.onFoot.Interact.triggered)
                 {
                     interactable.BaseInteract();

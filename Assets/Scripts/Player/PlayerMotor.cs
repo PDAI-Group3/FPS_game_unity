@@ -77,6 +77,7 @@ public class PlayerMotor : MonoBehaviour
         
     }
     // this receives inputs for InputManager and applies to character controller
+
     public void ProcessMove(Vector2 input)
     {
         Vector3 moveDirection = Vector3.zero;
