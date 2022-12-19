@@ -121,6 +121,7 @@ public class NetworkWeapon : NetworkBehaviour
 
             if(t_hit.collider.gameObject.GetComponent<CapsuleCollider>()) {
                 t_hit.collider.gameObject.GetComponent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
+                return;
             }
 
             GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;

@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SettingsMenu.unity
     guid: b9cbf3a8120ee3f44a02b0e345fabff3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SPGameScene.unity
     guid: 8dab5cf313e9e3a4480bd110e35d1836
   - enabled: 1

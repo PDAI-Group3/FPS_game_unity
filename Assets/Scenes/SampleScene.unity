@@ -4134,6 +4134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!136 &886970375
+--- !u!136 &886970384
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10690,6 +10691,14 @@ PrefabInstance:
       propertyPath: spawnPoint3
       value: 
       objectReference: {fileID: 1640983563}
+    - target: {fileID: 1194507771, guid: 399bc23989c22af488a319a26d049e7f, type: 3}
+      propertyPath: spawnPoint4
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194507771, guid: 399bc23989c22af488a319a26d049e7f, type: 3}
+      propertyPath: spawnPoint5
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1194507771, guid: 399bc23989c22af488a319a26d049e7f, type: 3}
       propertyPath: playerPrefab
       value: 
