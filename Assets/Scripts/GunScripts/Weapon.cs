@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
+using TMPro;
 
 
 public class Weapon : MonoBehaviour
@@ -11,29 +12,60 @@ public class Weapon : MonoBehaviour
     public Transform weaponParent;
     public GameObject bulletholePrefab;
     public LayerMask canBeShot;
+    public int currentAmmo;
+    public int magazineSize;
+
+    public float reloadTime = 2f;
+    private bool isReloading = false;
+
+    private bool isShooting = false;
 
     private int currentIndex;
 
+    public Animator animator;
+    private InputManager inputManager;
     private GameObject currentWeapon;
+
+    public TextMeshProUGUI ammoCountText;
     // Start is called before the first frame update
     void Start()
     {
-        
+        inputManager = GetComponent<InputManager>();
+        ammoCountText = FindObjectOfType<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
         if (Input.GetKeyUp(KeyCode.Alpha1)) Equip(0);
 
         if (currentWeapon != null)
         {
+            if(currentAmmo >= 0)
+            {
+                ammoCountText.text = currentAmmo.ToString() + " / " + magazineSize;
+            }else if(isReloading == true)
+            {
+                ammoCountText.text = "0" + " / " + magazineSize;
+            }
+
+            if (inputManager.onFoot.Reload.triggered && !isReloading)
+            {
+                StartCoroutine(Reload());
+            }
+
             Aim(Input.GetMouseButton(1));
 
             
             if (Input.GetMouseButtonDown(0))
             {
                 Shoot();
+                if(currentAmmo == 0 && !isReloading)
+                {
+                    StartCoroutine(Reload());
+                }
             }
 
             
@@ -53,6 +85,9 @@ public class Weapon : MonoBehaviour
         t_newWeapon.transform.localEulerAngles = Vector3.zero;
 
         currentWeapon = t_newWeapon;
+
+        currentAmmo = loadout[currentIndex].maxAmmo;
+        magazineSize = loadout[currentIndex].maxAmmo;
 
     }
 
@@ -76,6 +111,20 @@ public class Weapon : MonoBehaviour
 
     void Shoot()
     {
+        if (isShooting == true)
+            return;
+
+        if (currentAmmo >= 0 && !isReloading) {
+            currentAmmo--;
+        }
+        else
+        {
+            return;
+        }
+        if (isReloading == true)
+            return;
+
+        
         
 
         RaycastHit t_hit = new RaycastHit();
@@ -84,16 +133,44 @@ public class Weapon : MonoBehaviour
 
             if(t_hit.collider.gameObject.TryGetComponent<EnemyAI>(out EnemyAI enemyAIComponent))
             {
-                enemyAIComponent.TakeDamage(1);
+                enemyAIComponent.TakeDamage(loadout[currentIndex].damage);
 
                 return;
             }
 
             GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
             t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal);
-
+            StartCoroutine(firerateWait());
             //hole disappears in given seconds
             Destroy(t_newBulletHole, 5f);
         }
+
+        //StartCoroutine(firerateWait());
+    }
+
+    IEnumerator Reload()
+    {
+        isReloading = true;
+        
+        weaponParent.GetComponent<Animator>().SetBool("isReloading", true);
+
+        yield return new WaitForSeconds(reloadTime);
+        
+        weaponParent.GetComponent<Animator>().SetBool("isReloading", false);
+
+        currentAmmo = loadout[currentIndex].maxAmmo;
+        isReloading = false;
+    }
+
+    IEnumerator firerateWait()
+    {
+        isShooting = true;
+
+        weaponParent.GetComponent<Animator>().SetBool("isShooting", true);
+
+        yield return new WaitForSeconds(loadout[currentIndex].fireRate);
+
+        weaponParent.GetComponent<Animator>().SetBool("isShooting", false);
+        isShooting = false;
     }
 }
