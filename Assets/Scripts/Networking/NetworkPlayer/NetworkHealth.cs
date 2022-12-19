@@ -61,18 +61,6 @@ public class NetworkHealth : NetworkBehaviour {
                 SyncTransforms();
             }
         }
-
-        // //testing damage
-        // if (Input.GetKeyDown(KeyCode.J))
-        // {
-        //     TakeDamage(1);
-        // }
-        // //testing healing
-        // if (Input.GetKeyDown(KeyCode.H))
-        // {
-        //     TakeHeal(1);
-        // }
-
     }
 
     public void UpdateHealthUI()
