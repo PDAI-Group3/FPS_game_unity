@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
@@ -17,7 +18,7 @@ public class BotFOVDetection : MonoBehaviour
 
     
     public float botFireRate;
-    bool isShooting = false;
+    bool isHitting = false;
     public LayerMask LocalPlayer;
     public Transform projectile;
     public Transform shotTarget;
@@ -77,14 +78,30 @@ public class BotFOVDetection : MonoBehaviour
                         {
 
                             Debug.Log("Raycast hit!");
-                            //return true;
 
-                            
+                            /*if (hit.collider.gameObject.TryGetComponent<Health>(out Health HealthComponent))
+                            {
+                                Debug.Log("pelaajaan osu");
+                                HealthComponent.TakeDamage(1);
+
+                                var botFovObject = new BotFOVDetection();
+
+                                botFovObject.startCoroutine();
+                                return true;
+                            }*/
+                            //var botFovObject = new BotFOVDetection();
+
+                            //botFovObject.HitPlayer();
+
+                            //HitPlayer();
+
+                            return true;
+                            /*
                             if (hit.transform == target)
                             {
                                 Debug.Log("Bot sees you");
                                 return true; // näkee pelaajan
-                            }
+                            }*/
                             // ylempi if ei toimi jostain syystä, raycast ei tunnu osuvan meihin, vaikka me ollaan target
                             // testattu ylempänä ja ylempi toimii muutenkin, rivin 55 debug.log toimii kun me astutaan botin lähelle
                         }
@@ -104,47 +121,66 @@ public class BotFOVDetection : MonoBehaviour
         {
             Debug.Log("in isinfov");
             nav.SetDestination(player.position);
+
+            //HitPlayer();
             // to do :
             // ampuminen
-            
-            if (isShooting == false)
+
+            /*if (isShooting == false)
             {
                 
-                Shoot();
-                //StartCoroutine(AfterShooting());
-            }
-            
+                //Shoot();
+                StartCoroutine(AfterHit());
+            }*/
+
         }
     }
-
-     
-    public void Shoot()
+/*
+    public void HitPlayer()
     {
-        Debug.Log("shoot funktion alussa");
-        RaycastHit t_hit = new RaycastHit();
-        if (Physics.Raycast(GameObject.Find("Bot/Eyes").transform.position, GameObject.Find("Bot/Eyes").transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, LocalPlayer))
+        
+        if (TryGetComponent<Health>(out Health HealthComponent))
         {
-            Debug.Log("shoot raycast shot");
-            if (t_hit.collider.gameObject.TryGetComponent<Health>(out Health HealthComponent))
-            {
-                Debug.Log("pelaajaan osu");
-                HealthComponent.TakeDamage(2);
+            Debug.Log("pelaajaan osu");
+            HealthComponent.TakeDamage(1);
 
-                return;
-            }
-            Debug.Log("pelaajaan ei osunu");
-            //GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
-
+            StartCoroutine(AfterHit());
         }
-        Debug.Log("shot if ei toiminu");
+    }*/
+
+    /*
+   public void Shoot()
+   {
+       Debug.Log("shoot funktion alussa");
+       RaycastHit t_hit = new RaycastHit();
+       if (Physics.Raycast(GameObject.Find("Bot/Eyes").transform.position, GameObject.Find("Bot/Eyes").transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, LocalPlayer))
+       {
+           Debug.Log("shoot raycast shot");
+           if (t_hit.collider.gameObject.TryGetComponent<Health>(out Health HealthComponent))
+           {
+               Debug.Log("pelaajaan osu");
+               HealthComponent.TakeDamage(2);
+
+               return;
+           }
+           Debug.Log("pelaajaan ei osunu");
+           //GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
+
+       }
+       Debug.Log("shot if ei toiminu");
+   }*/
+
+    public void startCoroutine()
+    {
+        StartCoroutine(AfterHit());
     }
     
-    /* //delay after shooting
-    IEnumerator AfterShooting()
+     //delay after damage
+    IEnumerator AfterHit()
     {
-        Debug.Log("aftershotissa");
-        isShooting = true;
-        yield return new WaitForSeconds(botFireRate);
-        isShooting = false;
-    }*/
+        Debug.Log("just hit player");
+        
+        yield return new WaitForSeconds(5f);
+        
+    }
 }

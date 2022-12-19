@@ -122,10 +122,11 @@ public class Health : MonoBehaviour
             {
                 player.transform.position = new Vector3(location2.x, location2.y, location2.z);
             }
-            else if (deathCounter >= 3)
+            else if (deathCounter == 3)
             {
                 player.transform.position = new Vector3(location3.x, location3.y, location3.z);
             }
+            
 
             health = maxHealth;
             SyncTransforms();
@@ -145,5 +146,10 @@ public class Health : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    IEnumerator RespawnTimer()
+    {
+        yield return new WaitForSeconds(5f);
     }
 }
