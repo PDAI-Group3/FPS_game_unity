@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Door : NetworkBehaviour {
+public class NetworkDoor : NetworkBehaviour {
     public NetworkVariable<bool> State = new NetworkVariable<bool>();
 
     [SerializeField]
