@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
+using static UnityEngine.Physics;
 public class NetworkHealth : NetworkBehaviour {
-
     public override void OnNetworkSpawn() {
         if(!IsOwner) {this.enabled = false;}
     }
 
     [Header("Health Bar")]
-    public int health;
+    public int  health;
     public int maxHealth = 9;
     public Image[] hearts;
     public Sprite fullHeart;
@@ -52,24 +52,26 @@ public class NetworkHealth : NetworkBehaviour {
         if (death) {
             if(IsServer) {
                 health = maxHealth;
-                DeathClientRpc(clientId);
+                gameObject.transform.position = new Vector3(0,1,0);
+                SyncTransforms();
             }
             else {
                 health = maxHealth;
-                DeathServerRpc(clientId);
+                gameObject.transform.position = new Vector3(0,1,0);
+                SyncTransforms();
             }
         }
 
-        //testing damage
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            TakeDamage(1);
-        }
-        //testing healing
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            TakeHeal(1);
-        }
+        // //testing damage
+        // if (Input.GetKeyDown(KeyCode.J))
+        // {
+        //     TakeDamage(1);
+        // }
+        // //testing healing
+        // if (Input.GetKeyDown(KeyCode.H))
+        // {
+        //     TakeHeal(1);
+        // }
 
     }
 
@@ -102,11 +104,11 @@ public class NetworkHealth : NetworkBehaviour {
         }
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(int damage)
     {
-        health -= damageAmount;
-        durationTimer = 0;
-        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0.25f);
+            health -= damage;
+            durationTimer = 0;
+            overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0.25f);
     }
 
     public void TakeHeal(int healAmount)
@@ -123,17 +125,23 @@ public class NetworkHealth : NetworkBehaviour {
         return false;
     }
 
+
+
+/*     public void doSyncTransforms() {
+        SyncTransforms();
+    }
+
     [ClientRpc]
     public void DeathClientRpc(ulong client) {
         if (IsServer) {
             NetworkObject player = NetworkManager.ConnectedClients[client].PlayerObject;
-            player.gameObject.transform.position = new Vector3(0,0,0);
-            SyncTransforms();
+            player.gameObject.transform.position = new Vector3(0,1,0);
+            doSyncTransforms();
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc(ulong client) {
         DeathClientRpc(client);
-    }
+    } */
 }

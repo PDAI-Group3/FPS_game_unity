@@ -22,10 +22,12 @@ public class NetworkWeapon : NetworkBehaviour
     [SerializeField]
     Camera playerCam;
 
+    public ulong clientId;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        clientId = NetworkManager.LocalClientId;
     }
 
     // Update is called once per frame
@@ -116,6 +118,11 @@ public class NetworkWeapon : NetworkBehaviour
             RaycastHit t_hit = new RaycastHit();
             if (Physics.Raycast(transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
             {
+
+            if(t_hit.collider.gameObject.GetComponent<CapsuleCollider>()) {
+                t_hit.collider.gameObject.GetComponent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
+            }
+
             GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
             t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal);
 
