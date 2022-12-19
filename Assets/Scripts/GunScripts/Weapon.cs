@@ -27,11 +27,18 @@ public class Weapon : MonoBehaviour
     private GameObject currentWeapon;
 
     public TextMeshProUGUI ammoCountText;
+
+    public AudioClip shootingSound;
+    public AudioClip reloadSound;
+    AudioSource audioSource;
+
+
     // Start is called before the first frame update
     void Start()
     {
         inputManager = GetComponent<InputManager>();
         ammoCountText = FindObjectOfType<TextMeshProUGUI>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -53,6 +60,7 @@ public class Weapon : MonoBehaviour
 
             if (inputManager.onFoot.Reload.triggered && !isReloading)
             {
+                
                 StartCoroutine(Reload());
             }
 
@@ -124,8 +132,8 @@ public class Weapon : MonoBehaviour
         if (isReloading == true)
             return;
 
-        
-        
+        //shooting sound
+        audioSource.PlayOneShot(shootingSound, 0.8f);
 
         RaycastHit t_hit = new RaycastHit();
         if (Physics.Raycast(GameObject.Find("Player/PlayerCamera").transform.position, GameObject.Find("Player/PlayerCamera").transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, canBeShot))
@@ -134,7 +142,7 @@ public class Weapon : MonoBehaviour
             if(t_hit.collider.gameObject.TryGetComponent<EnemyAI>(out EnemyAI enemyAIComponent))
             {
                 enemyAIComponent.TakeDamage(loadout[currentIndex].damage);
-
+                StartCoroutine(firerateWait());
                 return;
             }
 
@@ -145,13 +153,15 @@ public class Weapon : MonoBehaviour
             Destroy(t_newBulletHole, 5f);
         }
 
-        //StartCoroutine(firerateWait());
+        
     }
 
     IEnumerator Reload()
     {
         isReloading = true;
-        
+
+        audioSource.PlayOneShot(reloadSound, 0.5f);
+
         weaponParent.GetComponent<Animator>().SetBool("isReloading", true);
 
         yield return new WaitForSeconds(reloadTime);

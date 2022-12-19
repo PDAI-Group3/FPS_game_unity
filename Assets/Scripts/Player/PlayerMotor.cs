@@ -9,6 +9,9 @@ public class PlayerMotor : MonoBehaviour
     private CharacterController controller;
     private Vector3 playerVelocity;
     public float speed = 8f;
+    public float speedStanding = 8f;
+    public float speedCrouching = 4f;
+    public float speedSprinting = 12f;
     private bool isGrounded;
     public float gravity = -9.8f;
     public float jumpHeight = 1f;
@@ -19,14 +22,14 @@ public class PlayerMotor : MonoBehaviour
 
     private bool sprinting;
 
-    // hover
-    public float DistanceFromGround = 2f;
+    
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -34,6 +37,7 @@ public class PlayerMotor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         isGrounded = controller.isGrounded;
 
         if (lerpCrouch)
@@ -45,12 +49,12 @@ public class PlayerMotor : MonoBehaviour
             if (crouching)
             {
                 controller.height = Mathf.Lerp(controller.height, 1, p);
-                speed = 3;
+                speed = speedCrouching;
             }
             else
             {
                 controller.height = Mathf.Lerp(controller.height, 2, p);
-                speed = 5;
+                speed = speedStanding;
             }
 
             if (p > 1) 
@@ -60,20 +64,7 @@ public class PlayerMotor : MonoBehaviour
             }
         }
 
-        /*
-        //hover
-        Vector3 newPos = transform.position;
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, Vector3.down, out hit))
-        {
-            newPos.y = (hit.point + Vector3.up * DistanceFromGround).y;
-        }
-
-        transform.position = newPos;
-        */
             
-
         
     }
     // this receives inputs for InputManager and applies to character controller
@@ -100,11 +91,7 @@ public class PlayerMotor : MonoBehaviour
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
         }
 
-        /* //hover
-        if (DistanceFromGround < 3)
-        {
-            playerVelocity.y = 5f;
-        }*/
+       
     }
 
     public void Crouch()
@@ -124,11 +111,11 @@ public class PlayerMotor : MonoBehaviour
         else { 
             if (sprinting)
             {
-                speed = 12;
+                speed = speedSprinting;
             }
             else
             {
-                speed = 8;
+                speed = speedStanding;
             }
         }
     }

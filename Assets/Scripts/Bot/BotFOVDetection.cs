@@ -71,19 +71,20 @@ public class BotFOVDetection : MonoBehaviour
                     {
 
                         Ray ray = new Ray(checkingObject.position, target.position - checkingObject.position);
-                        //RaycastHit hit;
+                        RaycastHit hit;
 
-                        if (Physics.Raycast(ray, out _, maxRadius))
+                        if (Physics.Raycast(ray, out hit, maxRadius))
                         {
 
-                            //Debug.Log("Raycast hit!");
-                            return true;
+                            Debug.Log("Raycast hit!");
+                            //return true;
 
-                            /*if (hit.transform == target)
+                            
+                            if (hit.transform == target)
                             {
                                 Debug.Log("Bot sees you");
                                 return true; // näkee pelaajan
-                            }*/
+                            }
                             // ylempi if ei toimi jostain syystä, raycast ei tunnu osuvan meihin, vaikka me ollaan target
                             // testattu ylempänä ja ylempi toimii muutenkin, rivin 55 debug.log toimii kun me astutaan botin lähelle
                         }
@@ -109,19 +110,19 @@ public class BotFOVDetection : MonoBehaviour
             if (isShooting == false)
             {
                 
-                //Shoot();
+                Shoot();
                 //StartCoroutine(AfterShooting());
             }
             
         }
     }
 
-    /* 
+     
     public void Shoot()
     {
         Debug.Log("shoot funktion alussa");
         RaycastHit t_hit = new RaycastHit();
-        if (Physics.Raycast(GameObject.Find("Bot").transform.position, GameObject.Find("Bot").transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, LocalPlayer))
+        if (Physics.Raycast(GameObject.Find("Bot/Eyes").transform.position, GameObject.Find("Bot/Eyes").transform.TransformDirection(Vector3.forward), out t_hit, Mathf.Infinity, LocalPlayer))
         {
             Debug.Log("shoot raycast shot");
             if (t_hit.collider.gameObject.TryGetComponent<Health>(out Health HealthComponent))
@@ -136,7 +137,7 @@ public class BotFOVDetection : MonoBehaviour
 
         }
         Debug.Log("shot if ei toiminu");
-    }*/
+    }
     
     /* //delay after shooting
     IEnumerator AfterShooting()
