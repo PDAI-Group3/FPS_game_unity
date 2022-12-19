@@ -19,12 +19,13 @@ public class NetworkWeapon : NetworkBehaviour
 
     private GameObject currentWeapon;
 
-    private ulong clientId;
+    [SerializeField]
+    Camera playerCam;
 
     // Start is called before the first frame update
     void Start()
     {
-        clientId = NetworkManager.LocalClientId;
+
     }
 
     // Update is called once per frame
@@ -40,8 +41,8 @@ public class NetworkWeapon : NetworkBehaviour
                 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    Vector3 transformPos = NetworkManager.LocalClient.PlayerObject.transform.position;
-                    Vector3 transformDir = NetworkManager.LocalClient.PlayerObject.transform.TransformDirection(Vector3.forward);
+                    Vector3 transformPos = playerCam.transform.position;
+                    Vector3 transformDir = playerCam.transform.TransformDirection(Vector3.forward);
                     ShootClientRpc(transformPos, transformDir);
                 }
             }
@@ -56,7 +57,9 @@ public class NetworkWeapon : NetworkBehaviour
                 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    ShootServerRpc(clientId);
+                    Vector3 transformPos = playerCam.transform.position;
+                    Vector3 transformDir = playerCam.transform.TransformDirection(Vector3.forward);
+                    ShootServerRpc(transformPos, transformDir);
                 }
             }
         }
@@ -111,7 +114,7 @@ public class NetworkWeapon : NetworkBehaviour
     void ShootClientRpc(Vector3 transformPos, Vector3 transformDir)
     {
             RaycastHit t_hit = new RaycastHit();
-            if (Physics.Raycast( transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
+            if (Physics.Raycast(transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
             {
             GameObject t_newBulletHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
             t_newBulletHole.transform.LookAt(t_hit.point + t_hit.normal);
@@ -122,11 +125,8 @@ public class NetworkWeapon : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void ShootServerRpc(ulong clientId)
+    void ShootServerRpc(Vector3 transformPos, Vector3 transformDir)
     {
-        NetworkObject playerObj = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
-        Vector3 transformPos = playerObj.transform.position;
-        Vector3 transformDir = playerObj.transform.TransformDirection(Vector3.forward);
         ShootClientRpc(transformPos, transformDir);
     }
 }

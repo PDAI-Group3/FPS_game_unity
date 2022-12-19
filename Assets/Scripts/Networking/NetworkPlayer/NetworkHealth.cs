@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
-
-public class NetworkHealth : NetworkBehaviour
-{
+public class NetworkHealth : NetworkBehaviour {
 
     public override void OnNetworkSpawn() {
         if(!IsOwner) {this.enabled = false;}
@@ -28,8 +23,11 @@ public class NetworkHealth : NetworkBehaviour
     private float durationTimer;
     private bool death = false;
 
+    public ulong clientId;
+
     private void Start()
     {
+        clientId = NetworkManager.LocalClientId;
         health = maxHealth;
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
     }
@@ -46,6 +44,19 @@ public class NetworkHealth : NetworkBehaviour
                 float tempAlpha = overlay.color.a;
                 tempAlpha -= Time.deltaTime * fadeSpeed;
                 overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);
+            }
+        }
+
+        death = CheckHealth();
+
+        if (death) {
+            if(IsServer) {
+                health = maxHealth;
+                DeathClientRpc(clientId);
+            }
+            else {
+                health = maxHealth;
+                DeathServerRpc(clientId);
             }
         }
 
@@ -96,14 +107,6 @@ public class NetworkHealth : NetworkBehaviour
         health -= damageAmount;
         durationTimer = 0;
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0.25f);
-
-        death = CheckHealth();
-
-        if (death)
-        {
-            //kuolema
-            Debug.Log("kuollut");
-        }
     }
 
     public void TakeHeal(int healAmount)
@@ -118,5 +121,19 @@ public class NetworkHealth : NetworkBehaviour
             return true;
         }
         return false;
+    }
+
+    [ClientRpc]
+    public void DeathClientRpc(ulong client) {
+        if (IsServer) {
+            NetworkObject player = NetworkManager.ConnectedClients[client].PlayerObject;
+            player.gameObject.transform.position = new Vector3(0,0,0);
+            SyncTransforms();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void DeathServerRpc(ulong client) {
+        DeathClientRpc(client);
     }
 }

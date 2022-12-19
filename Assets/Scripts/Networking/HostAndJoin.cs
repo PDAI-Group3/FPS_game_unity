@@ -7,8 +7,6 @@ using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 
 public class HostAndJoin : NetworkBehaviour {
-
-    private NetworkManager netManager;
     public static string joinCode;
 
     public struct RelayHostData
