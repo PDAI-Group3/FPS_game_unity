@@ -86,6 +86,8 @@ public class NetworkWeapon : NetworkBehaviour
                         return;
                     }
 
+                    audioSource.PlayOneShot(shootingSound, 0.8f);
+
                     Vector3 transformPos = playerCam.transform.position;
                     Vector3 transformDir = playerCam.transform.TransformDirection(Vector3.forward);
                     ShootClientRpc(transformPos, transformDir);
@@ -115,6 +117,8 @@ public class NetworkWeapon : NetworkBehaviour
                         if (isReloading == true) {
                             return;
                         }
+
+                        audioSource.PlayOneShot(shootingSound, 0.8f);
 
                         Vector3 transformPos = playerCam.transform.position;
                         Vector3 transformDir = playerCam.transform.TransformDirection(Vector3.forward);
@@ -174,16 +178,13 @@ public class NetworkWeapon : NetworkBehaviour
     [ClientRpc]
     void ShootClientRpc(Vector3 transformPos, Vector3 transformDir)
     {
-        //shooting sound
-        audioSource.PlayOneShot(shootingSound, 0.8f);
-
-        RaycastHit t_hit = new RaycastHit();
+            RaycastHit t_hit = new RaycastHit();
             if (Physics.Raycast(transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
             {
 
-            if(t_hit.collider.gameObject.GetComponentInParent<NetworkHealth>()) {
-                ulong player = t_hit.collider.gameObject.GetComponentInParent<NetworkHealth>().clientId;
-                NetworkManager.ConnectedClients[player].PlayerObject.GetComponent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
+            if(t_hit.collider.gameObject.GetComponent<CapsuleCollider>()) {
+                t_hit.collider.gameObject.GetComponent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
+                t_hit.collider.gameObject.GetComponent<NetworkPlayerMotor>().Jump();
                 return;
             }
 
