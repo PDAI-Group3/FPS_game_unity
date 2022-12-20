@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -8,9 +9,15 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     float healthAI, maxHealthAI = 9f;
 
+    public GameObject bot;
+    public GameObject botSpawner;
+
+    private Vector3 spawnerLocation1;
+
     void Start()
     {
         healthAI = maxHealthAI;
+        spawnerLocation1 = botSpawner.transform.position;
     }
 
     
@@ -20,7 +27,9 @@ public class EnemyAI : MonoBehaviour
 
         if(healthAI <= 0)
         {
-            Destroy(gameObject);
+            healthAI = maxHealthAI;
+            bot.transform.position = new Vector3(spawnerLocation1.x, spawnerLocation1.y, spawnerLocation1.z);
+            //Destroy(gameObject);
         }
     }
 }
