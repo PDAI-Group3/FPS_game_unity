@@ -182,7 +182,7 @@ public class NetworkWeapon : NetworkBehaviour
             {
 
             if(t_hit.collider.gameObject.GetComponentInParent<NetworkHealth>()) {
-                ulong player = t_hit.collider.gameObject.GetComponentInParent<NetworkObject>().OwnerClientId;
+                ulong player = t_hit.collider.gameObject.GetComponentInParent<NetworkHealth>().clientId;
                 NetworkManager.ConnectedClients[player].PlayerObject.GetComponent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
                 return;
             }
