@@ -18,7 +18,7 @@ public class NetworkWeapon : NetworkBehaviour
 
     private int currentIndex;
 
-    public ulong clientId;
+    ulong clientId;
 
     private GameObject currentWeapon;
 
@@ -181,7 +181,7 @@ public class NetworkWeapon : NetworkBehaviour
             if (Physics.Raycast(transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
             {
 
-            if(t_hit.collider.gameObject.GetComponent<NetworkHealth>()) {
+            if(t_hit.collider.gameObject.GetComponent<MeshCollider>()) {
                 t_hit.collider.gameObject.GetComponent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
                 return;
             }
