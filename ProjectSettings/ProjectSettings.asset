@@ -154,7 +154,8 @@ PlayerSettings:
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Standalone: com.DefaultCompany.FPS-project
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -708,11 +709,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 2
-  cloudProjectId: 
+  cloudProjectId: c6d74f62-3fef-42c2-a61d-417c708a4ed8
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: 'Mew Mew!: Space edition'
+  organizationId: veedabix
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 
