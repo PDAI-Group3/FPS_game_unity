@@ -17,8 +17,7 @@ public class NetworkInputManager : NetworkBehaviour {
     private NetworkPlayerLook look;
 
     // Start is called before the first frame update
-    void Awake()
-    {
+    void Awake() {
         playerInput = new PlayerInput();
         onFoot = playerInput.OnFoot;
 

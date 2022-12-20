@@ -18,6 +18,8 @@ public class NetworkWeapon : NetworkBehaviour
 
     private int currentIndex;
 
+    ulong clientId;
+
     private GameObject currentWeapon;
 
     public int currentAmmo;
@@ -27,15 +29,11 @@ public class NetworkWeapon : NetworkBehaviour
     private bool isReloading = false;
 
     private bool isShooting = false;
-
-    public Animator animator;
     private NetworkInputManager networkInputManager;
     public TextMeshProUGUI ammoCountText;
 
     [SerializeField]
     Camera playerCam;
-
-    public ulong clientId;
 
     public AudioClip shootingSound;
     public AudioClip reloadSound;
@@ -117,7 +115,7 @@ public class NetworkWeapon : NetworkBehaviour
                         if (isReloading == true) {
                             return;
                         }
-                        
+
                         Vector3 transformPos = playerCam.transform.position;
                         Vector3 transformDir = playerCam.transform.TransformDirection(Vector3.forward);
                         ShootServerRpc(transformPos, transformDir);
@@ -183,8 +181,9 @@ public class NetworkWeapon : NetworkBehaviour
             if (Physics.Raycast(transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
             {
 
-            if(t_hit.collider.gameObject.GetComponent<CapsuleCollider>()) {
-                t_hit.collider.gameObject.GetComponent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
+            if(t_hit.collider.gameObject.GetComponentInParent<NetworkHealth>()) {
+                ulong player = t_hit.collider.gameObject.GetComponentInParent<NetworkObject>().OwnerClientId;
+                NetworkManager.ConnectedClients[player].PlayerObject.GetComponent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
                 return;
             }
 
