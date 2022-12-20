@@ -24,10 +24,15 @@ public class NetworkWeapon : NetworkBehaviour
 
     public ulong clientId;
 
+    public AudioClip shootingSound;
+    public AudioClip reloadSound;
+    AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         clientId = NetworkManager.LocalClientId;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -115,7 +120,10 @@ public class NetworkWeapon : NetworkBehaviour
     [ClientRpc]
     void ShootClientRpc(Vector3 transformPos, Vector3 transformDir)
     {
-            RaycastHit t_hit = new RaycastHit();
+        //shooting sound
+        audioSource.PlayOneShot(shootingSound, 0.8f);
+
+        RaycastHit t_hit = new RaycastHit();
             if (Physics.Raycast(transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
             {
 
