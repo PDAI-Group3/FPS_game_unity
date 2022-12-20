@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using Unity.Netcode;
+using TMPro;
 
 
 public class NetworkWeapon : NetworkBehaviour
@@ -19,6 +20,18 @@ public class NetworkWeapon : NetworkBehaviour
 
     private GameObject currentWeapon;
 
+    public int currentAmmo;
+    public int magazineSize;
+
+    public float reloadTime = 2f;
+    private bool isReloading = false;
+
+    private bool isShooting = false;
+
+    public Animator animator;
+    private NetworkInputManager networkInputManager;
+    public TextMeshProUGUI ammoCountText;
+
     [SerializeField]
     Camera playerCam;
 
@@ -32,22 +45,49 @@ public class NetworkWeapon : NetworkBehaviour
     void Start()
     {
         clientId = NetworkManager.LocalClientId;
+        networkInputManager = GetComponent<NetworkInputManager>();
+        ammoCountText = FindObjectOfType<TextMeshProUGUI>();
         audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+
+    if (currentWeapon != null)
+        if(currentAmmo >= 0) {
+            ammoCountText.text = currentAmmo.ToString() + " / " + magazineSize;
+        } else if(isReloading == true) {
+                ammoCountText.text = "0" + " / " + magazineSize;
+            }
+        if (networkInputManager.onFoot.Reload.triggered && !isReloading) {
+            StartCoroutine(Reload());
+        }
+
         if(IsServer) {
             if (Input.GetKeyUp(KeyCode.Alpha1)) EquipClientRpc(0);
 
-            if (currentWeapon != null)
-            {
+            if (currentWeapon != null) {
                 AimClientRpc(Input.GetMouseButton(1));
 
                 
                 if (Input.GetMouseButtonDown(0))
                 {
+                    if (isShooting == true) {
+                        return;
+                    }
+
+                    if (currentAmmo >= 0 && !isReloading) {
+                        currentAmmo--;
+                    }
+
+                    else {
+                        return;
+                    }
+        
+                    if (isReloading == true) {
+                        return;
+                    }
+
                     Vector3 transformPos = playerCam.transform.position;
                     Vector3 transformDir = playerCam.transform.TransformDirection(Vector3.forward);
                     ShootClientRpc(transformPos, transformDir);
@@ -56,26 +96,39 @@ public class NetworkWeapon : NetworkBehaviour
         }
         else {
             if (Input.GetKeyUp(KeyCode.Alpha1)) EquipServerRpc(0);
+            
+            if (currentWeapon != null) {
+                    AimServerRpc(Input.GetMouseButton(1));
 
-            if (currentWeapon != null)
-            {
-                AimServerRpc(Input.GetMouseButton(1));
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (isShooting == true) {
+                            return;
+                        }
 
-                
-                if (Input.GetMouseButtonDown(0))
-                {
-                    Vector3 transformPos = playerCam.transform.position;
-                    Vector3 transformDir = playerCam.transform.TransformDirection(Vector3.forward);
-                    ShootServerRpc(transformPos, transformDir);
+                        if (currentAmmo >= 0 && !isReloading) {
+                            currentAmmo--;
+                        }
+
+                        else {
+                            return;
+                        }
+        
+                        if (isReloading == true) {
+                            return;
+                        }
+                        
+                        Vector3 transformPos = playerCam.transform.position;
+                        Vector3 transformDir = playerCam.transform.TransformDirection(Vector3.forward);
+                        ShootServerRpc(transformPos, transformDir);
+                    }
                 }
-            }
         }
     }
 
     [ClientRpc]
     void EquipClientRpc(int p_ind)
     {   
-
             if (currentWeapon != null) Destroy(currentWeapon);
 
             currentIndex = p_ind;
@@ -85,6 +138,9 @@ public class NetworkWeapon : NetworkBehaviour
             t_newWeapon.transform.localEulerAngles = Vector3.zero;
 
             currentWeapon = t_newWeapon;
+
+            currentAmmo = loadout[currentIndex].maxAmmo;
+            magazineSize = loadout[currentIndex].maxAmmo;
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -114,7 +170,7 @@ public class NetworkWeapon : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     void AimServerRpc(bool p_isAiming)
     {
-                AimClientRpc(p_isAiming);
+        AimClientRpc(p_isAiming);
     }
 
     [ClientRpc]
@@ -144,5 +200,33 @@ public class NetworkWeapon : NetworkBehaviour
     void ShootServerRpc(Vector3 transformPos, Vector3 transformDir)
     {
         ShootClientRpc(transformPos, transformDir);
+    }
+
+    IEnumerator Reload()
+    {
+        isReloading = true;
+
+        audioSource.PlayOneShot(reloadSound, 0.5f);
+
+        weaponParent.GetComponent<Animator>().SetBool("isReloading", true);
+
+        yield return new WaitForSeconds(reloadTime);
+        
+        weaponParent.GetComponent<Animator>().SetBool("isReloading", false);
+
+        currentAmmo = loadout[currentIndex].maxAmmo;
+        isReloading = false;
+    }
+
+    IEnumerator firerateWait()
+    {
+        isShooting = true;
+
+        weaponParent.GetComponent<Animator>().SetBool("isShooting", true);
+
+        yield return new WaitForSeconds(loadout[currentIndex].fireRate);
+
+        weaponParent.GetComponent<Animator>().SetBool("isShooting", false);
+        isShooting = false;
     }
 }
