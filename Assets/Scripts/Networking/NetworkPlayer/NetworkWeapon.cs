@@ -181,7 +181,7 @@ public class NetworkWeapon : NetworkBehaviour
             if (Physics.Raycast(transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
             {
 
-            if(t_hit.collider == GetComponent<MeshCollider>()) {
+            if(t_hit.collider.gameObject.GetComponentInParent<NetworkHealth>()) {
                 t_hit.collider.gameObject.GetComponentInParent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
                 return;
             }
