@@ -18,6 +18,8 @@ public class NetworkWeapon : NetworkBehaviour
 
     private int currentIndex;
 
+    public ulong clientId;
+
     private GameObject currentWeapon;
 
     public int currentAmmo;
@@ -27,15 +29,11 @@ public class NetworkWeapon : NetworkBehaviour
     private bool isReloading = false;
 
     private bool isShooting = false;
-
-    public Animator animator;
     private NetworkInputManager networkInputManager;
     public TextMeshProUGUI ammoCountText;
 
     [SerializeField]
     Camera playerCam;
-
-    public ulong clientId;
 
     public AudioClip shootingSound;
     public AudioClip reloadSound;
