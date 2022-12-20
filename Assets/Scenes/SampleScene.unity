@@ -1425,7 +1425,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 392173070}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea3e0e7e03612f641ba2fac514865e0a, type: 3}
   m_Name: 
@@ -3271,6 +3271,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1272881482}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxAngle
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxRadius
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 886970361, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
       propertyPath: botSpawner
       value: 
@@ -3816,6 +3824,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1272881482}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxAngle
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxRadius
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 886970361, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
       propertyPath: botSpawner
       value: 
@@ -5591,6 +5607,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1272881482}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxAngle
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxRadius
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 886970361, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
       propertyPath: botSpawner
       value: 
@@ -9263,6 +9287,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1272881482}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxAngle
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxRadius
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 886970361, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
       propertyPath: botSpawner
       value: 
@@ -10489,6 +10521,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1272881482}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxAngle
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxRadius
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 886970361, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
       propertyPath: botSpawner
       value: 
@@ -10567,6 +10607,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1272881482}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxAngle
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 886970350, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
+      propertyPath: maxRadius
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 886970361, guid: 52101ce33e76f8542bbcfbb87f92df64, type: 3}
       propertyPath: botSpawner
       value: 
