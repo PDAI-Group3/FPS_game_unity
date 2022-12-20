@@ -117,7 +117,7 @@ public class NetworkWeapon : NetworkBehaviour
                         if (isReloading == true) {
                             return;
                         }
-                        
+
                         Vector3 transformPos = playerCam.transform.position;
                         Vector3 transformDir = playerCam.transform.TransformDirection(Vector3.forward);
                         ShootServerRpc(transformPos, transformDir);
@@ -183,7 +183,7 @@ public class NetworkWeapon : NetworkBehaviour
             if (Physics.Raycast(transformPos, transformDir, out t_hit, Mathf.Infinity, canBeShot))
             {
 
-            if(t_hit.collider.gameObject.GetComponent<CapsuleCollider>()) {
+            if(t_hit.collider.gameObject.GetComponent<NetworkHealth>()) {
                 t_hit.collider.gameObject.GetComponent<NetworkHealth>().TakeDamage(loadout[currentIndex].damage);
                 return;
             }
