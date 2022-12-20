@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
 
 public class BotFOVDetection : MonoBehaviour
 {
@@ -50,16 +47,16 @@ public class BotFOVDetection : MonoBehaviour
     public static bool inFOV(Transform checkingObject, Transform target, float maxAngle, float maxRadius)
     {
 
-        Collider[] overlaps = new Collider[100]; // overlaps ottaa 10 objektia botin ympärillä
+        Collider[] overlaps = new Collider[100]; // overlaps ottaa 10 objektia botin ympï¿½rillï¿½
         int count = Physics.OverlapSphereNonAlloc(checkingObject.position, maxRadius, overlaps);
 
         for (int i = 0; i < count + 1; i++)
         {
 
-            if (overlaps[i] != null) // jos overlaps-taulukko ei oo tyhjä
+            if (overlaps[i] != null) // jos overlaps-taulukko ei oo tyhjï¿½
             {
 
-                if (overlaps[i].transform == target) // jos overlaps taulukossa on target (meidän pelaaja)
+                if (overlaps[i].transform == target) // jos overlaps taulukossa on target (meidï¿½n pelaaja)
                 {
 
                     //Debug.Log("You are in the bots environment array");
@@ -100,16 +97,16 @@ public class BotFOVDetection : MonoBehaviour
                             if (hit.transform == target)
                             {
                                 Debug.Log("Bot sees you");
-                                return true; // näkee pelaajan
+                                return true; // nï¿½kee pelaajan
                             }*/
-                            // ylempi if ei toimi jostain syystä, raycast ei tunnu osuvan meihin, vaikka me ollaan target
-                            // testattu ylempänä ja ylempi toimii muutenkin, rivin 55 debug.log toimii kun me astutaan botin lähelle
+                            // ylempi if ei toimi jostain syystï¿½, raycast ei tunnu osuvan meihin, vaikka me ollaan target
+                            // testattu ylempï¿½nï¿½ ja ylempi toimii muutenkin, rivin 55 debug.log toimii kun me astutaan botin lï¿½helle
                         }
                     }
                 }
             }
         }
-        return false; // ei nää pelaajaa
+        return false; // ei nï¿½ï¿½ pelaajaa
     }
 
     private void Update()

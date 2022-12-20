@@ -1,6 +1,4 @@
-using Unity.Netcode;
 using UnityEngine;
-using UnityEditor;
 
 public class NetworkUI : MonoBehaviour {
     private void OnGUI() {

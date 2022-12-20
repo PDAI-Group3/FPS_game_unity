@@ -2,7 +2,6 @@ using Unity.Services.Core;
 using UnityEngine;
 using System;
 using Unity.Netcode;
-using System.Collections.Generic;
 
 public class Initialize : NetworkBehaviour
 {
